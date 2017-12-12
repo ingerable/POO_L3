@@ -10,9 +10,12 @@ public class start {
 	{
 		Parser p = Parser.getParser();
 		p.setFile(args[0]);	
-		try {
-			System.out.println(p.numberOfPattern("<path"));
-		} catch (IOException e) {
+		try 
+		{
+			p.extractPath();
+
+		} catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 	}

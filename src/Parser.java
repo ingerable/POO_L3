@@ -3,6 +3,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import pathCommands.Command;
 
 /**
  * 
@@ -24,6 +27,8 @@ public class Parser
 	
 	private File xml;
 	
+	//private ArrayList<Path> paths;
+	
 	private Parser()
 	{}
 	
@@ -36,6 +41,7 @@ public class Parser
 		return instanceParser;
 	}
 	
+	
 	//get the number of occurences for a given pattern
 	public Integer numberOfPattern(String pattern) throws IOException
 	{
@@ -43,7 +49,7 @@ public class Parser
 		int result=0;
 		while(in.available()>0)
 		{
-			if(isPath(in,0,pattern))
+			if(isFound(in,0,pattern))
 			{
 				result+=1;
 			}
@@ -52,7 +58,8 @@ public class Parser
 		return result;
 	}
 	
-	public boolean isPath(FileInputStream b, int index, String pattern) throws IOException
+	//return true if the given pattern was found 
+	public boolean isFound(FileInputStream b, int index, String pattern) throws IOException
 	{
 		if(b.read()== (int)pattern.charAt(index))
 		{
@@ -63,13 +70,26 @@ public class Parser
 			}
 			else
 			{
-				return isPath(b,index+1,pattern);
+				return isFound(b,index+1,pattern);
 			}
 		}
 		else
 		{
 			return false;
 		}
+	}
+		
+	
+	//extract path that start at the beginning of FileInputStream in
+	public void extractPath() throws IOException
+	{
+		FileInputStream in = new FileInputStream(xml);	
+		while(isFound(in,0,"<path")==false);
+		while(isFound(in,0,"d=")==false);
+		in.read();
+		Command cmd = Command.getType((char) in.read());
+		cmd.whoIam();
+		in.close();
 	}
 
 	public String getFile() 
