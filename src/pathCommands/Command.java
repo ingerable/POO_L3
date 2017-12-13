@@ -1,9 +1,14 @@
 package pathCommands;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+
+import shapeComponents.Point;
 
 public class Command 
 {	
+	private ArrayList<Point> points;
+	
 	//extract the string command from the fs file
 	public String extract(FileInputStream fs){ return "";};
 	
@@ -31,5 +36,22 @@ public class Command
 				break;	
 		}
 		return cmd;
+	}
+	
+	
+	public ArrayList<Point> getPoints() 
+	{
+		return points;
+	}
+	
+	
+	public void setPoints(ArrayList<Point> points) 
+	{
+		this.points = points;
+	}
+	
+	public void addPoint(Point p)
+	{
+		this.points.add(p);
 	}
 }

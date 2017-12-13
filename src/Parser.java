@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import pathCommands.Command;
+import shapeComponents.Point;
 
 /**
  * 
@@ -81,14 +82,19 @@ public class Parser
 		
 	
 	//extract path that start at the beginning of FileInputStream in
-	public void extractPath() throws IOException
+	public void extractPathCommands() throws IOException
 	{
 		FileInputStream in = new FileInputStream(xml);	
+		
 		while(isFound(in,0,"<path")==false);
 		while(isFound(in,0,"d=")==false);
 		in.read();
 		Command cmd = Command.getType((char) in.read());
+		getPoint(in);
+		getPoint(in);
+		getPoint(in);
 		cmd.whoIam();
+		
 		in.close();
 	}
 
@@ -104,5 +110,37 @@ public class Parser
 		
 		
 	}
+	
+
+	public Point getPoint(FileInputStream in) throws IOException
+	{
+		String x="";
+		String y="";
+		
+		char c = (char)in.read();
+		
+		//get the x coordinate
+		while(c!=',')
+		{
+			x+=c;
+			c=(char)in.read();
+		}
+		
+		c=(char)in.read(); // skip the , delimiter between 2 point
+		
+		//get the y coordinate
+		while(c!=' ')
+		{
+			y+=c;
+			c=(char)in.read();
+		}
+			
+		System.out.println(x);
+		System.out.println(Float.parseFloat(y));
+		
+		return new Point(Float.parseFloat(x),Float.parseFloat(y));
+		
+	}
+	
 	
 }
