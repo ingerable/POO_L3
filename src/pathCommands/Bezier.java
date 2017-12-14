@@ -9,27 +9,19 @@ public class Bezier extends Command
 {
 	private ArrayList<Point> points;
 	
-	@Override
-	public String extract(FileInputStream fs) 
+	private char charType;
+	
+	public Bezier() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		super('c');
 	}
 	
+	//return the name of the implicit command after a bezier command
 	@Override
-	public void whoIam()
+	public char getImplicitCommand()
 	{
-		System.out.println("I am bezier command");
+		return 'p'; // stand for polybezier
 	}
-	
-	@Override
-	public ArrayList<Point> getPoints() {
-		return points;
-	}
-	
-	@Override
-	public void setPoints(ArrayList<Point> points) {
-		this.points = points;
-	}
+		
 	
 }

@@ -4,8 +4,10 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import pathCommands.Command;
+import pathCommands.Path;
 import shapeComponents.Point;
 
 /**
@@ -28,10 +30,12 @@ public class Parser
 	
 	private File xml;
 	
-	//private ArrayList<Path> paths;
+	private static final char[] VALUES = new char[] {'c','m','l','z'};
 	
 	private Parser()
-	{}
+	{
+		
+	}
 	
 	public static Parser getParser()
 	{
@@ -82,22 +86,76 @@ public class Parser
 		
 	
 	//extract path that start at the beginning of FileInputStream in
-	public void extractPathCommands() throws IOException
-	{
-		FileInputStream in = new FileInputStream(xml);	
+	public void extractPathCommands(FileInputStream in) throws IOException
+	{	
+		//initialize command and path
+		Path p = new Path(false);
+		Command cmd = null;
 		
+		//look for the first occurence of a path
 		while(isFound(in,0,"<path")==false);
-		while(isFound(in,0,"d=")==false);
-		in.read();
-		Command cmd = Command.getType((char) in.read());
-		getPoint(in);
-		getPoint(in);
-		getPoint(in);
-		cmd.whoIam();
+		while(isFound(in,0,"d=\"")==false);
+		char c = (char)in.read();
 		
+		//while we do not reach the end of the path
+		while(c!='"')
+		{
+			if(Character.isDigit(c) || c=='-') //gotta find the implicit command
+			{
+				cmd = extractImplicitCommand(c,cmd.getImplicitCommand(),in);
+				p.addCommand(cmd);
+				c = (char)in.read();
+			}
+			else if(isCommand((char)c)) // no problem, the char define explicitly the command
+			{
+				cmd = extractCommand(c,in);
+				p.addCommand(cmd);
+				c = (char)in.read();
+			}
+			else
+			{
+				c = (char)in.read();
+			}	
+		}
 		in.close();
+		p.printCommands();
 	}
-
+	
+	//type of command, filestream
+	public Command extractCommand(char c,FileInputStream in) throws IOException
+	{
+		//get the type of the command
+		Command cmd = Command.getType(c);
+		//extract the point and skip a space of one
+		in.skip(1);
+		in = cmd.getPoint(in,(char)in.read());
+		return cmd;
+	}
+	
+	
+	// first read number, type of command, filestream
+	public Command extractImplicitCommand(char n, char c,FileInputStream in) throws IOException
+	{
+		//get the type of the command
+		Command cmd = Command.getType(c);
+		//extract the point and do not skip space
+		in = cmd.getPoint(in,n);
+		return cmd;
+	}
+	
+	public boolean isCommand(char c)
+	{
+		for(int i=0;i<VALUES.length;i++)
+		{
+			if(c==VALUES[i])
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+		
+	
 	public String getFile() 
 	{
 		return file;
@@ -106,41 +164,6 @@ public class Parser
 	public void setFile(String file) 
 	{	
 		this.file = file;
-		this.xml = new File(this.file);
-		
-		
+		this.xml = new File(this.file);	
 	}
-	
-
-	public Point getPoint(FileInputStream in) throws IOException
-	{
-		String x="";
-		String y="";
-		
-		char c = (char)in.read();
-		
-		//get the x coordinate
-		while(c!=',')
-		{
-			x+=c;
-			c=(char)in.read();
-		}
-		
-		c=(char)in.read(); // skip the , delimiter between 2 point
-		
-		//get the y coordinate
-		while(c!=' ')
-		{
-			y+=c;
-			c=(char)in.read();
-		}
-			
-		System.out.println(x);
-		System.out.println(Float.parseFloat(y));
-		
-		return new Point(Float.parseFloat(x),Float.parseFloat(y));
-		
-	}
-	
-	
 }

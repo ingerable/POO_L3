@@ -1,36 +1,32 @@
 package pathCommands;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import shapeComponents.Point;
 
 public class Closepath extends Command
 {
-	private ArrayList<Point> points;
-	
-	@Override
-	public String extract(FileInputStream fs) 
+		
+	public Closepath() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		super('z');
 	}
 	
 	@Override
-	public void whoIam()
+	public FileInputStream getPoint(FileInputStream in, char firstNumber) throws IOException
+	{	
+		return in;
+		
+	}
+	
+	//return the name of the implicit command after a closepath command
+	@Override
+	public char getImplicitCommand()
 	{
-		System.out.println("I am Closepath command");
+		return 'l';
 	}
-	
-	@Override
-	public ArrayList<Point> getPoints() 
-	{
-		return this.points;
-	}
-	
-	@Override
-	public void setPoints(ArrayList<Point> points) {
-		this.points = points;
-	}
+		
 
 }

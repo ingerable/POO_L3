@@ -9,27 +9,18 @@ public class Lineto extends Command
 {
 	private ArrayList<Point> points;
 	
-	@Override
-	public String extract(FileInputStream fs) 
+	private char charType;
+	
+	public Lineto() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		super('l');
 	}
 	
+	//return the name of the implicit command after a lineto command
 	@Override
-	public void whoIam()
+	public char getImplicitCommand()
 	{
-		System.out.println("I am lineto command");
-	}
-	
-	@Override
-	public ArrayList<Point> getPoints() {
-		return points;
-	}
-	
-	@Override
-	public void setPoints(ArrayList<Point> points) {
-		this.points = points;
+		return 'l';
 	}
 
 }
