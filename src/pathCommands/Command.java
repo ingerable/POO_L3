@@ -86,7 +86,7 @@ public class Command
 			c=(char)in.read();
 		}
 			
-		System.out.println(Float.parseFloat(x)+" "+Float.parseFloat(y));
+		//System.out.println(Float.parseFloat(x)+" "+Float.parseFloat(y));
 		
 		this.addPoint(new Point(Float.parseFloat(x),Float.parseFloat(y)));
 		
@@ -96,7 +96,7 @@ public class Command
 	
 	public void presentYourself()
 	{
-		System.out.println("Command: "+this.charType);
+		System.out.println("Command: "+this.charType + ", relative: "+this.isRelative);
 		
 		for(int i=0;i<this.points.size();i++)
 		{

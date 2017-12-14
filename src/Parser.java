@@ -30,7 +30,7 @@ public class Parser
 	
 	private File xml;
 	
-	private static final char[] VALUES = new char[] {'c','m','l','z'};
+	private static final char[] VALUES = new char[] {'c','m','l','z','C','M','L','Z'};
 	
 	private Parser()
 	{}
@@ -94,7 +94,6 @@ public class Parser
 		while(isFound(in,0,"<path")==false);
 		while(isFound(in,0,"d=\"")==false);
 		char c = (char)in.read();
-		System.out.println((char)c);
 		
 		//while we do not reach the end of the path
 		while(c!='"')
@@ -117,7 +116,7 @@ public class Parser
 			}	
 		}
 		//in.close();
-		//p.printCommands();
+		p.printCommands();
 		
 	}
 	
