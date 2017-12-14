@@ -10,18 +10,19 @@ public class Command
 {	
 	private ArrayList<Point> points;
 	
-	//extract the string command from the fs file
-	public FileInputStream extract(FileInputStream fs){ return null;};
 	
 	public char getImplicitCommand()
 	{return ' ';};
 	
 	private char charType;
 	
-	public Command(char c)
+	private boolean isRelative;
+	
+	public Command(char c, boolean b)
 	{
 		this.points = new ArrayList<Point>();
 		this.charType=c;
+		this.isRelative=b;
 	};
 	
 	//return the type of the command depending on the argument c 
@@ -31,16 +32,30 @@ public class Command
 		switch(c)
 		{
 			case'm':
-				cmd=new Moveto();
+				cmd=new Moveto(false);
 				break;
 			case'z':
-				cmd=new Closepath();
+				cmd=new Closepath(true);
 				break;
 			case'l':
-				cmd=new Lineto();
+				cmd=new Lineto(true);
 				break;
 			case'c':
-				cmd=new Bezier();
+				cmd=new Bezier(false,true);
+				break;
+			case'p':
+				cmd=new Bezier(true,true);
+			case'M':
+				cmd=new Moveto(false);
+				break;
+			case'Z':
+				cmd=new Closepath(false);
+				break;
+			case'L':
+				cmd=new Lineto(false);
+				break;
+			case'C':
+				cmd=new Bezier(false,false);
 				break;
 			default:			
 		}
@@ -48,7 +63,7 @@ public class Command
 	}
 	
 	//get the point for the current command with the given file stream, the last argument indicate if the there is space or not before we read 
-	public FileInputStream getPoint(FileInputStream in,char firstNumber) throws IOException
+	public FileInputStream extractPoints(FileInputStream in,char firstNumber) throws IOException
 	{
 		String x="";
 		String y="";
@@ -115,5 +130,13 @@ public class Command
 	public void setCharType(char charType) 
 	{
 		this.charType = charType;
+	}
+
+	public boolean isRelative() {
+		return isRelative;
+	}
+
+	public void setRelative(boolean isRelative) {
+		this.isRelative = isRelative;
 	}
 }

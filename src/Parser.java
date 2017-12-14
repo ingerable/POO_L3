@@ -33,9 +33,7 @@ public class Parser
 	private static final char[] VALUES = new char[] {'c','m','l','z'};
 	
 	private Parser()
-	{
-		
-	}
+	{}
 	
 	public static Parser getParser()
 	{
@@ -96,6 +94,7 @@ public class Parser
 		while(isFound(in,0,"<path")==false);
 		while(isFound(in,0,"d=\"")==false);
 		char c = (char)in.read();
+		System.out.println((char)c);
 		
 		//while we do not reach the end of the path
 		while(c!='"')
@@ -117,8 +116,9 @@ public class Parser
 				c = (char)in.read();
 			}	
 		}
-		in.close();
-		p.printCommands();
+		//in.close();
+		//p.printCommands();
+		
 	}
 	
 	//type of command, filestream
@@ -128,7 +128,7 @@ public class Parser
 		Command cmd = Command.getType(c);
 		//extract the point and skip a space of one
 		in.skip(1);
-		in = cmd.getPoint(in,(char)in.read());
+		in = cmd.extractPoints(in,(char)in.read());
 		return cmd;
 	}
 	
@@ -139,7 +139,7 @@ public class Parser
 		//get the type of the command
 		Command cmd = Command.getType(c);
 		//extract the point and do not skip space
-		in = cmd.getPoint(in,n);
+		in = cmd.extractPoints(in,n);
 		return cmd;
 	}
 	

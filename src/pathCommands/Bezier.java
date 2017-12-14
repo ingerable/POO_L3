@@ -11,9 +11,12 @@ public class Bezier extends Command
 	
 	private char charType;
 	
-	public Bezier() 
+	private boolean isPolyBezier; //indicate if this bezier command is part of a poliBezier command
+		
+	public Bezier(boolean b,boolean isR)
 	{
-		super('c');
+		super('c',isR);
+		this.isPolyBezier = b;
 	}
 	
 	//return the name of the implicit command after a bezier command

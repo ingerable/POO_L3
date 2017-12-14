@@ -13,7 +13,16 @@ public class start {
 		Parser p = Parser.getParser();
 		p.setFile(args[0]);
 		try {
-			p.extractPathCommands(new FileInputStream(p.getFile()));
+			int nbrPath = p.numberOfPattern("<path");
+			System.out.println("nbrPath :"+ nbrPath);
+			
+			FileInputStream in = new FileInputStream(p.getFile());
+			for(int i=0; i<nbrPath;i++)
+			{
+				p.extractPathCommands(in);
+			}
+			
+			in.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

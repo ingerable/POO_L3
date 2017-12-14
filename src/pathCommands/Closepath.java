@@ -9,13 +9,13 @@ import shapeComponents.Point;
 public class Closepath extends Command
 {
 		
-	public Closepath() 
+	public Closepath(boolean isR) 
 	{
-		super('z');
+		super('z',isR);
 	}
 	
 	@Override
-	public FileInputStream getPoint(FileInputStream in, char firstNumber) throws IOException
+	public FileInputStream extractPoints(FileInputStream in, char firstNumber) throws IOException
 	{	
 		return in;
 		

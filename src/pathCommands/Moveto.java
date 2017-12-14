@@ -8,9 +8,9 @@ import shapeComponents.Point;
 public class Moveto extends Command
 {
 	
-	public Moveto() 
+	public Moveto(boolean isR) 
 	{
-		super('m');
+		super('m', isR);
 	}
 	
 	//return the name of the implicit command after a moveto command

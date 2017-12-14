@@ -11,9 +11,9 @@ public class Lineto extends Command
 	
 	private char charType;
 	
-	public Lineto() 
+	public Lineto(boolean isR) 
 	{
-		super('l');
+		super('l',isR);
 	}
 	
 	//return the name of the implicit command after a lineto command
