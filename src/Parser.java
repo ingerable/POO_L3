@@ -108,20 +108,20 @@ public class Parser
 			}
 			else if(isCommand((char)c)) // no problem, the char define explicitly the command
 			{
-				if((char)c == 'z') // special case, z command could be the last of the path
+				if((char)c == 'z') // special case, z command could be the last of the path (z doesn't take arguments so we could exceed the end of path char " )
 				{
 					cmd = extractImplicitCommand((char) in.read(),c,in);
 					p.addCommand(cmd);
 					c = (char)in.read();
 				}
-				else
+				else //normal case: command values
 				{
 					cmd = extractCommand(c,in);
 					p.addCommand(cmd);
 					c = (char)in.read();
 				}			
 			}
-			else if(c=='p') //id of the path (id attribute)
+			else if(c=='p') //id of the path (id attribute) just skip it
 			{
 				while(c!='"')
 				{
@@ -133,7 +133,6 @@ public class Parser
 				c = (char)in.read();
 			}
 		}
-		//in.close();
 		//p.printCommands();
 		this.paths.add(p);
 		
@@ -146,7 +145,7 @@ public class Parser
 		Command cmd = Command.getType(c);
 		//extract the point and skip a space of one
 		in.skip(1);
-		in = cmd.extractPoints(in,(char)in.read());
+		cmd.extractPoints(in,(char)in.read());
 		return cmd;
 	}
 	
@@ -157,7 +156,7 @@ public class Parser
 		//get the type of the command
 		Command cmd = Command.getType(c);
 		//extract the point and do not skip space
-		in = cmd.extractPoints(in,n);
+		cmd.extractPoints(in,n);
 		return cmd;
 	}
 	

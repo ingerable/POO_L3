@@ -20,16 +20,24 @@ public class start {
 			FileReader in = new FileReader(p.getFile());
 			for(int i=0; i<nbrPath;i++)
 			{
-				System.out.println("path number: "+i);
 				p.extractPathCommands(in);
 			}
-			p.getPaths().size();
-			
 			in.close();
-		} catch (FileNotFoundException e) {
+			
+			System.out.println("relative command");
+			p.getPaths().get(0).printCommands();
+			System.out.println("absolute command");
+			p.getPaths().get(0).toAbsolute();
+			p.getPaths().get(0).printCommands();
+			
+		} 
+		catch (FileNotFoundException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

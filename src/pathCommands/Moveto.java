@@ -1,6 +1,8 @@
 package pathCommands;
 
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import shapeComponents.Point;
@@ -19,6 +21,5 @@ public class Moveto extends Command
 	{
 		return 'l';
 	}
-	
 	
 }

@@ -15,12 +15,12 @@ public class Closepath extends Command
 		super('z',isR);
 	}
 	
-	@Override
+	@Override // here we do not extract any point (z does not take arguments)
 	public FileReader extractPoints(FileReader in, char firstChar) throws IOException
 	{	
+		//seems like z is closing the path
 		if( firstChar =='"')
 		{
-			System.out.println("z closes the path");
 			this.setLast(true);
 		}
 		

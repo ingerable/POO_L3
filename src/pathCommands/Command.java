@@ -55,7 +55,7 @@ public class Command
 			case'c':
 				cmd=new Bezier(false,true);
 				break;
-			case'p':
+			case'p': // polyBezier
 				cmd=new Bezier(true,true);
 				break;
 			case'M':
@@ -111,6 +111,20 @@ public class Command
 		
 		return in;
 		
+	}
+	
+	//convert relative point value to absolute point value, update the cursor and return it
+	public Point toAbsolute(Point cursor)
+	{
+		if(this.isRelative)
+		{
+			for(Point p: this.points)
+			{
+				p.addPoint(cursor); // convert point to absolute position
+				cursor = p; // update the cursor
+			}
+		}
+		return cursor;
 	}
 	
 	

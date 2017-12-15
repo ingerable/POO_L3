@@ -11,6 +11,11 @@ public class Point {
 		this.y=y;
 	}
 	
+	public void addPoint(Point p)
+	{
+		this.x += p.getX();
+		this.y += p.getY();
+	}
 	
 	public float getY() 
 	{
