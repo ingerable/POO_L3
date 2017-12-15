@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +32,8 @@ public class Parser
 	
 	private static final char[] VALUES = new char[] {'c','m','l','z','C','M','L','Z'};
 	
+	private ArrayList<Path> paths = new ArrayList<Path>();
+	
 	private Parser()
 	{}
 	
@@ -48,9 +50,9 @@ public class Parser
 	//get the number of occurences for a given pattern
 	public Integer numberOfPattern(String pattern) throws IOException
 	{
-		FileInputStream in = new FileInputStream(xml);	
+		FileReader in = new FileReader(xml);	
 		int result=0;
-		while(in.available()>0)
+		while(in.ready())
 		{
 			if(isFound(in,0,pattern))
 			{
@@ -62,7 +64,7 @@ public class Parser
 	}
 	
 	//return true if the given pattern was found 
-	public boolean isFound(FileInputStream b, int index, String pattern) throws IOException
+	public boolean isFound(FileReader b, int index, String pattern) throws IOException
 	{
 		if(b.read()== (int)pattern.charAt(index))
 		{
@@ -83,22 +85,22 @@ public class Parser
 	}
 		
 	
-	//extract path that start at the beginning of FileInputStream in
-	public void extractPathCommands(FileInputStream in) throws IOException
+	//extract path that start at the beginning of FileReader in
+	public void extractPathCommands(FileReader in) throws IOException
 	{	
 		//initialize command and path
 		Path p = new Path(false);
-		Command cmd = null;
+		Command cmd = new Command();
 		
 		//look for the first occurence of a path
 		while(isFound(in,0,"<path")==false);
-		while(isFound(in,0,"d=\"")==false);
-		char c = (char)in.read();
+		while(isFound(in,0,"d=\"m")==false);
+		char c = 'm';
 		
 		//while we do not reach the end of the path
-		while(c!='"')
+		while(c!='"' && cmd.isLast()==false)
 		{
-			if(Character.isDigit(c) || c=='-') //gotta find the implicit command
+			if( (Character.isDigit(c) || c=='-') && cmd!=null) //this is an implicit command, so we have to deduce it from the last command
 			{
 				cmd = extractImplicitCommand(c,cmd.getImplicitCommand(),in);
 				p.addCommand(cmd);
@@ -106,22 +108,39 @@ public class Parser
 			}
 			else if(isCommand((char)c)) // no problem, the char define explicitly the command
 			{
-				cmd = extractCommand(c,in);
-				p.addCommand(cmd);
-				c = (char)in.read();
+				if((char)c == 'z') // special case, z command could be the last of the path
+				{
+					cmd = extractImplicitCommand((char) in.read(),c,in);
+					p.addCommand(cmd);
+					c = (char)in.read();
+				}
+				else
+				{
+					cmd = extractCommand(c,in);
+					p.addCommand(cmd);
+					c = (char)in.read();
+				}			
 			}
-			else
+			else if(c=='p') //id of the path (id attribute)
+			{
+				while(c!='"')
+				{
+					c = (char)in.read();
+				}
+			}
+			else // space
 			{
 				c = (char)in.read();
-			}	
+			}
 		}
 		//in.close();
-		p.printCommands();
+		//p.printCommands();
+		this.paths.add(p);
 		
 	}
 	
 	//type of command, filestream
-	public Command extractCommand(char c,FileInputStream in) throws IOException
+	public Command extractCommand(char c,FileReader in) throws IOException
 	{
 		//get the type of the command
 		Command cmd = Command.getType(c);
@@ -133,7 +152,7 @@ public class Parser
 	
 	
 	// first read number, type of command, filestream
-	public Command extractImplicitCommand(char n, char c,FileInputStream in) throws IOException
+	public Command extractImplicitCommand(char n, char c,FileReader in) throws IOException
 	{
 		//get the type of the command
 		Command cmd = Command.getType(c);
@@ -164,5 +183,13 @@ public class Parser
 	{	
 		this.file = file;
 		this.xml = new File(this.file);	
+	}
+
+	public ArrayList<Path> getPaths() {
+		return paths;
+	}
+
+	public void setPaths(ArrayList<Path> paths) {
+		this.paths = paths;
 	}
 }

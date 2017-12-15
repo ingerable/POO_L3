@@ -1,5 +1,6 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 
@@ -16,11 +17,13 @@ public class start {
 			int nbrPath = p.numberOfPattern("<path");
 			System.out.println("nbrPath :"+ nbrPath);
 			
-			FileInputStream in = new FileInputStream(p.getFile());
+			FileReader in = new FileReader(p.getFile());
 			for(int i=0; i<nbrPath;i++)
 			{
+				System.out.println("path number: "+i);
 				p.extractPathCommands(in);
 			}
+			p.getPaths().size();
 			
 			in.close();
 		} catch (FileNotFoundException e) {

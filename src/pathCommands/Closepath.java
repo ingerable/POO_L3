@@ -1,6 +1,7 @@
 package pathCommands;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,18 +16,14 @@ public class Closepath extends Command
 	}
 	
 	@Override
-	public FileInputStream extractPoints(FileInputStream in, char firstNumber) throws IOException
+	public FileReader extractPoints(FileReader in, char firstChar) throws IOException
 	{	
-		return in;
+		if( firstChar =='"')
+		{
+			System.out.println("z closes the path");
+			this.setLast(true);
+		}
 		
+		return in;	
 	}
-	
-	//return the name of the implicit command after a closepath command
-	@Override
-	public char getImplicitCommand()
-	{
-		return 'l';
-	}
-		
-
 }

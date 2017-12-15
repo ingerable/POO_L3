@@ -8,6 +8,8 @@ public class Path
 	
 	private boolean isFilled;
 	
+	private String name;
+	
 	public Path(boolean f)
 	{
 		this.isFilled = f;
@@ -17,7 +19,8 @@ public class Path
 	public Path() 
 	{}
 
-	public boolean isFilled() {
+	public boolean isFilled() 
+	{
 		return isFilled;
 	}
 
@@ -37,5 +40,15 @@ public class Path
 		{
 			p.presentYourself();
 		}
+	}
+	
+	public String name() 
+	{
+		return name;
+	}
+
+	public void setName(String n) 
+	{
+		this.name = n;
 	}
 }

@@ -28,5 +28,5 @@ public class Point {
 	{
 		this.x = x;
 	}
-
+	
 }

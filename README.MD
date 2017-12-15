@@ -2,6 +2,6 @@
 
 https://www.w3.org/TR/SVG/paths.html#PathDataMovetoCommands
 
-## Objet BuffererReader
+## Objet FileReaer
 
-https://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html
+https://docs.oracle.com/javase/7/docs/api/java/io/FileReader.html
