@@ -20,18 +20,8 @@ public class Path
 
 	public Path() 
 	{}
-	
-	public void toAbsolute()
-	{
-		Point cursor = this.pathCommands.get(0).getPoints().get(0); // extract the M commands point (absolute position of the cursor)
 		
-		//for each command of the path
-		for(int i=1; i<this.pathCommands.size();i++)
-		{
-			//convert points
-			cursor = this.pathCommands.get(i).toAbsolute(cursor);
-		}
-	}
+	
 	/*
 	 * accessors
 	 */
@@ -47,7 +37,16 @@ public class Path
 	
 	public void addCommand(Command c)
 	{
+		if(c.getCharType()=='m' && this.pathCommands.size()==0)//case where m is absolute even if the char is m because this is the first command
+		{
+			c.setRelative(false);
+		}
 		this.pathCommands.add(c);
+	}
+	
+	public ArrayList<Command> getCommand()
+	{
+		return this.pathCommands;
 	}
 	
 	public void printCommands()

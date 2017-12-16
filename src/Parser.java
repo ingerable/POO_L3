@@ -66,11 +66,15 @@ public class Parser
 	//return true if the given pattern was found 
 	public boolean isFound(FileReader b, int index, String pattern) throws IOException
 	{
-		if(b.read()== (int)pattern.charAt(index))
+		int c = b.read();
+		
+		if(c== (int)pattern.charAt(index))
 		{
+			
 			// last char of path, now we need to stop recursive call
 			if(index==pattern.length()-1)
 			{
+				
 				return true;
 			}
 			else
@@ -81,6 +85,22 @@ public class Parser
 		else
 		{
 			return false;
+		}
+	}
+	
+	public void isFound2(FileReader b, int index, String pattern) throws IOException
+	{
+		
+		while(index!=pattern.length()-1)
+		{
+			if(b.read()==(int)pattern.charAt(index))
+			{
+				index++;
+			}
+			else
+			{
+				index=0;
+			}
 		}
 	}
 		
@@ -100,9 +120,10 @@ public class Parser
 		//while we do not reach the end of the path
 		while(c!='"' && cmd.isLast()==false)
 		{
+			
 			if( (Character.isDigit(c) || c=='-') && cmd!=null) //this is an implicit command, so we have to deduce it from the last command
 			{
-				cmd = extractImplicitCommand(c,cmd.getImplicitCommand(),in);
+				cmd = extractImplicitCommand(cmd,in,c);
 				p.addCommand(cmd);
 				c = (char)in.read();
 			}
@@ -110,13 +131,13 @@ public class Parser
 			{
 				if((char)c == 'z') // special case, z command could be the last of the path (z doesn't take arguments so we could exceed the end of path char " )
 				{
-					cmd = extractImplicitCommand((char) in.read(),c,in);
+					cmd = Command.getType(cmd,c);
 					p.addCommand(cmd);
 					c = (char)in.read();
 				}
 				else //normal case: command values
 				{
-					cmd = extractCommand(c,in);
+					cmd = extractCommand(cmd,c,in);
 					p.addCommand(cmd);
 					c = (char)in.read();
 				}			
@@ -139,10 +160,10 @@ public class Parser
 	}
 	
 	//type of command, filestream
-	public Command extractCommand(char c,FileReader in) throws IOException
+	public Command extractCommand(Command lastCommand, char c,FileReader in) throws IOException
 	{
 		//get the type of the command
-		Command cmd = Command.getType(c);
+		Command cmd = Command.getType(lastCommand, c);
 		//extract the point and skip a space of one
 		in.skip(1);
 		cmd.extractPoints(in,(char)in.read());
@@ -151,12 +172,13 @@ public class Parser
 	
 	
 	// first read number, type of command, filestream
-	public Command extractImplicitCommand(char n, char c,FileReader in) throws IOException
+	public Command extractImplicitCommand(Command lastCommand,FileReader in,char numberRead) throws IOException
 	{
 		//get the type of the command
-		Command cmd = Command.getType(c);
-		//extract the point and do not skip space
-		cmd.extractPoints(in,n);
+		Command cmd = Command.getImplicitType(lastCommand);
+		
+		//extract the point and do not skip space (we already read the first number of the coordinate)
+		cmd.extractPoints(in,numberRead);
 		return cmd;
 	}
 	

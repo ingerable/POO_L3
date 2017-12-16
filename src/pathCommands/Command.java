@@ -5,14 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import shapeComponents.Point;
+import shapeComponents.ShapeComponent;
 
 public class Command 
 {	
 	private ArrayList<Point> points;
-	
-	//get the implicit command of the current command
-	public char getImplicitCommand()
-	{return ' ';};
 	
 	//char that represent the type of the command
 	private char charType;
@@ -22,6 +19,7 @@ public class Command
 	
 	//is the last command of the path
 	private boolean isLast;
+	
 	
 	public Command(char c, boolean b)
 	{
@@ -38,13 +36,13 @@ public class Command
 	};
 	
 	//return the type of the command depending on the argument c 
-	public static Command getType(char c)
+	public static Command getType(Command lastCommand ,char c)
 	{
 		Command cmd=null;
 		switch(c)
 		{
 			case'm':
-				cmd=new Moveto(false);
+				cmd=new Moveto(true);
 				break;
 			case'z':
 				cmd=new Closepath(true);
@@ -53,10 +51,10 @@ public class Command
 				cmd=new Lineto(true);
 				break;
 			case'c':
-				cmd=new Bezier(false,true);
+				cmd=new Bezier(true);
 				break;
-			case'p': // polyBezier
-				cmd=new Bezier(true,true);
+			case'p':
+				cmd=lastCommand; 
 				break;
 			case'M':
 				cmd=new Moveto(false);
@@ -68,11 +66,42 @@ public class Command
 				cmd=new Lineto(false);
 				break;
 			case'C':
-				cmd=new Bezier(false,false);
+				cmd=new Bezier(false);
 				break;			
 		}
 		return cmd;
 	}
+	
+	//return the implicit type of the command based on the last command
+		public static Command getImplicitType(Command lastCommand )
+		{
+			Command cmd=null;
+			switch(lastCommand.charType)
+			{
+				case'm':
+					cmd=new Lineto(true);
+					break;
+				case'z':
+					cmd=new Closepath(true);
+					break;
+				case'l':
+					cmd=lastCommand;
+					break;
+				case'c':
+					cmd=lastCommand;
+					break;
+				case'M':
+					cmd=new Lineto(false);
+					break;
+				case'L':
+					cmd=new Lineto(false);
+					break;
+				case'C':
+					cmd=lastCommand;
+					break;			
+			}
+			return cmd;
+		}
 	
 	//get the point for the current command with the given file stream, the last argument indicate if the there is space or not before we read 
 	public FileReader extractPoints(FileReader in,char firstNumber) throws IOException
@@ -113,20 +142,7 @@ public class Command
 		
 	}
 	
-	//convert relative point value to absolute point value, update the cursor and return it
-	public Point toAbsolute(Point cursor)
-	{
-		if(this.isRelative)
-		{
-			for(Point p: this.points)
-			{
-				p.addPoint(cursor); // convert point to absolute position
-				cursor = p; // update the cursor
-			}
-		}
-		return cursor;
-	}
-	
+
 	
 	//print the current command
 	public void presentYourself()
@@ -140,6 +156,11 @@ public class Command
 		}
 	}
 	
+	//get the current position of the command (relative or absolute) (default return the first point of the array)
+	public Point getPosition()
+	{
+		return this.getPoints().get(0);
+	}
 	
 	
 	/*
@@ -171,19 +192,23 @@ public class Command
 		this.charType = charType;
 	}
 
-	public boolean isRelative() {
+	public boolean isRelative() 
+	{
 		return isRelative;
 	}
 
-	public void setRelative(boolean isRelative) {
+	public void setRelative(boolean isRelative) 
+	{
 		this.isRelative = isRelative;
 	}
 
-	public boolean isLast() {
+	public boolean isLast() 
+	{
 		return isLast;
 	}
 
-	public void setLast(boolean isLast) {
+	public void setLast(boolean isLast) 
+	{
 		this.isLast = isLast;
 	}
 }

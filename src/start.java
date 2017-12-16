@@ -1,7 +1,13 @@
+import java.awt.Shape;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
+import pathCommands.Path;
+import shapeComponents.FinalShape;
+
+import view.Gui;
 
 
 public class start {
@@ -15,21 +21,24 @@ public class start {
 		p.setFile(args[0]);
 		try {
 			int nbrPath = p.numberOfPattern("<path");
+			
 			System.out.println("nbrPath :"+ nbrPath);
 			
 			FileReader in = new FileReader(p.getFile());
+			
 			for(int i=0; i<nbrPath;i++)
 			{
 				p.extractPathCommands(in);
 			}
 			in.close();
 			
-			System.out.println("relative command");
-			p.getPaths().get(0).printCommands();
-			System.out.println("absolute command");
-			p.getPaths().get(0).toAbsolute();
-			p.getPaths().get(0).printCommands();
 			
+			Path p1 = p.getPaths().get(9);
+			//FinalShape s = new FinalShape(p1);
+			p1.printCommands();
+			//System.out.println("//////////////////  shape components /////////////////");
+			//s.printShapeComponents();
+	
 		} 
 		catch (FileNotFoundException e) 
 		{

@@ -34,4 +34,9 @@ public class Point {
 		this.x = x;
 	}
 	
+	public String presentYourself()
+	{
+		return new String(this.x+" "+this.y);
+	}
+	
 }

@@ -13,13 +13,11 @@ public class Moveto extends Command
 	public Moveto(boolean isR) 
 	{
 		super('m', isR);
+		
+		if(!isR) // check if the command is relative or not and change the char type field
+		{
+			this.setCharType('M');
+		}
+		
 	}
-	
-	//return the name of the implicit command after a moveto command
-	@Override
-	public char getImplicitCommand()
-	{
-		return 'l';
-	}
-	
 }

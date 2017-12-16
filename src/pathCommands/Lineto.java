@@ -14,13 +14,9 @@ public class Lineto extends Command
 	public Lineto(boolean isR) 
 	{
 		super('l',isR);
+		if(!isR) // check if the command is relative or not and change the char type field
+		{
+			this.setCharType('L');
+		}
 	}
-	
-	//return the name of the implicit command after a lineto command
-	@Override
-	public char getImplicitCommand()
-	{
-		return 'l';
-	}
-
 }
