@@ -44,11 +44,11 @@ public class FinalShape
 					lastSubPath = cursor;
 				}
 			}
-			else
+			else // cmd has absolute values we have to update the cursor based on the absolute value
 			{
 				cursor = cmd.getPosition(); // update the cursor
 				//start of new sub-Path
-				if(cmd.getCharType()=='M')
+				if(cmd.getCharType()=='M' || cmd.getCharType()=='m')
 				{
 					lastSubPath = cursor;
 				}

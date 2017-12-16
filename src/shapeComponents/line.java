@@ -20,6 +20,7 @@ public class line extends ShapeComponent
 	
 	public line(Point cursor, Point lastSubPath) 
 	{
+		super();
 		this.addPoint(cursor);
 		this.addPoint(lastSubPath);
 	}

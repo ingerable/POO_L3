@@ -33,11 +33,11 @@ public class start {
 			in.close();
 			
 			
-			Path p1 = p.getPaths().get(9);
-			//FinalShape s = new FinalShape(p1);
+			Path p1 = p.getPaths().get(1);
+			FinalShape s = new FinalShape(p1);
 			p1.printCommands();
-			//System.out.println("//////////////////  shape components /////////////////");
-			//s.printShapeComponents();
+			System.out.println("//////////////////  shape components /////////////////");
+			s.printShapeComponents();
 	
 		} 
 		catch (FileNotFoundException e) 
