@@ -36,7 +36,7 @@ public class Bezier extends Command
 	@Override
 	public Point getPosition()
 	{
-		return this.getPoints().get(2);
+		return this.getPoints().get(this.getPoints().size()-1);
 	}	
 	
 }

@@ -19,4 +19,10 @@ public class Lineto extends Command
 			this.setCharType('L');
 		}
 	}
+	
+	@Override
+	public Point getPosition()
+	{
+		return this.getPoints().get(this.getPoints().size()-1);
+	}
 }

@@ -124,8 +124,21 @@ public class Parser
 			if( (Character.isDigit(c) || c=='-') && cmd!=null) //this is an implicit command, so we have to deduce it from the last command
 			{
 				cmd = extractImplicitCommand(cmd,in,c);
-				p.addCommand(cmd);
+				
+				if(cmd.getCharType()=='l' || cmd.getCharType()=='L')//special case, the last command was moveto command
+				{
+					p.addCommand(cmd); // add a first command lineto 
+				}
+				
 				c = (char)in.read();
+				
+				while((Character.isDigit(c) || c=='-') && cmd!=null)// while there is implicit command
+				{
+					cmd = extractImplicitCommand(cmd,in,c);
+					c = (char)in.read();
+				}
+				
+				
 			}
 			else if(isCommand((char)c)) // no problem, the char define explicitly the command
 			{
@@ -154,7 +167,6 @@ public class Parser
 				c = (char)in.read();
 			}
 		}
-		//p.printCommands();
 		this.paths.add(p);
 		
 	}
@@ -179,6 +191,7 @@ public class Parser
 		
 		//extract the point and do not skip space (we already read the first number of the coordinate)
 		cmd.extractPoints(in,numberRead);
+		
 		return cmd;
 	}
 	

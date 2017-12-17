@@ -36,7 +36,7 @@ public class Point {
 	
 	public String presentYourself()
 	{
-		return new String(this.x+" "+this.y);
+		return new String("("+this.x+","+this.y+")");
 	}
 	
 }

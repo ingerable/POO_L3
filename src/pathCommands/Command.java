@@ -94,7 +94,7 @@ public class Command
 					cmd=new Lineto(false);
 					break;
 				case'L':
-					cmd=new Lineto(false);
+					cmd=lastCommand;
 					break;
 				case'C':
 					cmd=lastCommand;

@@ -20,4 +20,10 @@ public class Moveto extends Command
 		}
 		
 	}
+	
+	@Override
+	public Point getPosition()
+	{
+		return this.getPoints().get(0);
+	}
 }

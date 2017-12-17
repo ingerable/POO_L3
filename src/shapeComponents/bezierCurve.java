@@ -9,21 +9,21 @@ public class bezierCurve extends ShapeComponent
 	private Point endPoint;
 	private Point begginingPoint;
 	
-	public bezierCurve(Command c, Point cursor)
+	
+	public bezierCurve(Command c, Point cursor, int point)
 	{
 		super(cursor,c);
 		
 		//temporary attribute to compute 
-		this.begginingPoint=cursor;
-		this.control_1 = new Point(c.getPoints().get(0).getX(),c.getPoints().get(0).getY());
-		this.control_2 = new Point(c.getPoints().get(1).getX(),c.getPoints().get(1).getY());
-		this.endPoint = new Point(c.getPoints().get(2).getX(),c.getPoints().get(2).getY());
+		this.begginingPoint=new Point(cursor.getX(),cursor.getY());
+		this.control_1 = new Point(c.getPoints().get(point).getX(),c.getPoints().get(point).getY());
+		this.control_2 = new Point(c.getPoints().get(point+1).getX(),c.getPoints().get(point+1).getY());
+		this.endPoint = new Point(c.getPoints().get(point+2).getX(),c.getPoints().get(point+2).getY());
 		
 		updateList(); // we still have to use the list to store the points
 	}
 	
-	
-	
+
 	public Point point_t(double t)
 	{
 		double x = Math.pow(3,t) * this.begginingPoint.getX()
@@ -50,12 +50,27 @@ public class bezierCurve extends ShapeComponent
 	
 	
 	//print the current command
-		@Override
-		public void presentYourself()
-		{
-			System.out.println("Bezier curve from " + this.begginingPoint.presentYourself()+" to "+this.endPoint.presentYourself());
-			System.out.println("with control point from " + this.control_1.presentYourself()+" to "+this.control_2.presentYourself());
-		}
+	@Override
+	public void presentYourself()
+	{
+		System.out.println("Bezier curve from " + this.begginingPoint.presentYourself()+" to "+this.endPoint.presentYourself());
+		System.out.println("with control point from " + this.control_1.presentYourself()+" to "+this.control_2.presentYourself());
+	}
+	
+	//transform relative values to absolute values for a bezier curve
+	public void  toAbsolute(Point cursor)
+	{
+		this.getPoints().get(1).addPoint(cursor);
+		this.getPoints().get(2).addPoint(cursor);
+		this.getPoints().get(3).addPoint(cursor);
+	}
+	
+	//return the value of the shape component used to update the cursor
+	@Override
+	public Point getPositionForCursor()
+	{
+		return this.getPoints().get(3); 
+	}
 		
 		
 	/*
