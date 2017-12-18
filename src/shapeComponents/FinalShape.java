@@ -14,14 +14,13 @@ public class FinalShape
 	private Path path;
 	
 	//the "hitbox" of the final shape
-	private FinalShape myHitbox;
+	private Hitbox myHitbox;
 	
 	public FinalShape(Path p)
 	{
 		this.path = p;
 		this.components = new ArrayList<ShapeComponent>();
-		this.pathToShape();
-		
+		this.pathToShape();		
 	}
 	
 	public FinalShape()
@@ -63,9 +62,10 @@ public class FinalShape
 					case'L':
 						sc=new line(cursor,cmd); // first line
 						this.addComponent(sc);
+						cursor = sc.getPositionForCursor(); //update the cursor
 						for(int i=1; i<cmd.getPoints().size();i++) // use the end of the last line to create the beggining of the new one
 						{
-							sc = new line(sc.getPoints().get(1),cmd.getPoints().get(i));
+							sc = new line(cursor,cmd.getPoints().get(i));
 							this.addComponent(sc);
 							cursor = sc.getPositionForCursor();
 						}
@@ -89,13 +89,13 @@ public class FinalShape
 						// iterate all the 3 points of the polybezier curve, use the end position of the last bezier curve to start the new one
 						sc = new bezierCurve(cmd,cursor,0);
 						this.addComponent(sc);
+						cursor = sc.getPositionForCursor(); //update the cursor
 						for(int i=3; i<(cmd.getPoints().size());i=i+3)
 						{
 							sc = new bezierCurve(cmd,sc.getPoints().get(3),i);
 							this.addComponent(sc);
 							cursor = sc.getPositionForCursor();
 						}
-						
 						break;			
 				}
 			}
@@ -136,29 +136,26 @@ public class FinalShape
 			
 			if(cmd.getCharType()=='M' || cmd.getCharType()=='m') // update the cursor but also the subpath
 			{
-				if(cmd.getCharType()=='M' || !cmd.isRelative())
+				if(cmd.getCharType()=='M' && !cmd.isRelative())
 				{
 					lastSubPath = new Point(cmd.getPosition().getX(),cmd.getPosition().getY());
-					cursor = new Point(cmd.getPosition().getX(),cmd.getPosition().getY()); // update the cursor
+					cursor = new Point(lastSubPath.getX(),lastSubPath.getY());
 				}
 				else if(cmd.getCharType()=='m' && cmd.isRelative())
 				{
 					lastSubPath = new Point(cmd.getPosition().getX()+cursor.getX(),cmd.getPosition().getY()+cursor.getY());
 					cursor = new Point(lastSubPath.getX(),lastSubPath.getY());
 				}
-				else
+				else if(cmd.getCharType()=='m' && !cmd.isRelative())
 				{
 					lastSubPath = new Point(cmd.getPosition().getX(),cmd.getPosition().getY());
-					cursor = new Point(cmd.getPosition().getX(),cmd.getPosition().getY()); // update the cursor
+					cursor = new Point(lastSubPath.getX(),lastSubPath.getY());
 				}
 			}
 			else if(cmd.getCharType()=='z')
 			{
 				
-			}
-
-			
-			
+			}		
 		}
 	}
 	
@@ -174,7 +171,7 @@ public class FinalShape
 	}
 	
 	
-	//look for the minimum value and add it to all shape component ( to make all the coordinates stricly positive)
+	//look for the minimum value 
 	public Point getMin()
 	{
 		float minX=this.getMax().getX();
@@ -201,7 +198,7 @@ public class FinalShape
 	{
 		Point min = this.getMin();
 		Point max = this.getMax();
-		FinalShape hitbox = new FinalShape();
+		Hitbox hitbox = new Hitbox();
 		hitbox.addComponent(new line(new Point(min.getX(),min.getY()),new Point(max.getX(),min.getY())));
 		hitbox.addComponent(new line(new Point(max.getX(),min.getY()),new Point(max.getX(),max.getY())));
 		hitbox.addComponent(new line(new Point(max.getX(),max.getY()),new Point(min.getX(),max.getY())));
@@ -231,7 +228,17 @@ public class FinalShape
 					
 		return new Point(maxX,maxY);
 	}
-				
+			
+	public void translateTo(Point translate)
+	{
+		for(ShapeComponent s : this.getComponents())
+		{
+			for(Point p : s.getPoints())
+			{
+				p.addPoint(translate);
+			}
+		}
+	}
 	
 	/*
 	 * accessors
@@ -249,7 +256,7 @@ public class FinalShape
 
 	public ArrayList<ShapeComponent> getComponents() 
 	{
-		return components;
+		return this.components;
 	}
 
 	public void setComponents(ArrayList<ShapeComponent> components) 
@@ -262,11 +269,11 @@ public class FinalShape
 		this.components.add(sc);
 	}
 
-	public FinalShape getMyHitbox() {
+	public Hitbox getMyHitbox() {
 		return myHitbox;
 	}
 
-	public void setMyHitbox(FinalShape myHitbox) {
+	public void setMyHitbox(Hitbox myHitbox) {
 		this.myHitbox = myHitbox;
 	}
 }

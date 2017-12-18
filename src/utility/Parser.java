@@ -1,3 +1,4 @@
+package utility;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -37,6 +38,10 @@ public class Parser
 	private Parser()
 	{}
 	
+	private float width;
+	
+	private float height;
+	
 	public static Parser getParser()
 	{
 		if(instanceParser==null)
@@ -44,6 +49,33 @@ public class Parser
 			instanceParser = new Parser();
 		}
 		return instanceParser;
+	}
+	
+	//get the width and the height from the svg
+	public void getWidthHeigh() throws IOException
+	{
+		
+		FileReader in = new FileReader(xml);
+		
+		String width="";
+		String height="";
+		char c;
+		while(isFound(in,0,"width=\"")==false);
+		c = (char)in.read();
+		while(c!='"')
+		{
+			width+=c;
+			c = (char)in.read();
+		}
+		while(isFound(in,0,"height=\"")==false);
+		c = (char)in.read();
+		while(c!='"')
+		{
+			height+=c;
+			c = (char)in.read();
+		}
+		this.width = Float.parseFloat(width);
+		this.height = Float.parseFloat(height);
 	}
 	
 	
@@ -87,36 +119,12 @@ public class Parser
 			return false;
 		}
 	}
-	
-	public Boolean isFound2(FileReader b, int index, String pattern, String pattern2) throws IOException
-	{
-		
-		int c = b.read();
-		
-		if(c == (int)pattern.charAt(index) || c==(int)pattern2.charAt(index))
-		{
 			
-			// last char of path, now we need to stop recursive call
-			if(index==pattern.length()-1 || index == pattern2.length()-1)
-			{
-				
-				return true;
-			}
-			else
-			{
-				return isFound2(b,index+1,pattern,pattern2);
-			}
-		}
-		else
-		{
-			return false;
-		}
-	}
-		
 	
 	//extract path that start at the beginning of FileReader in
 	public void extractPathCommands(FileReader in) throws IOException
 	{	
+		
 		//initialize command and path
 		Path p = new Path(false);
 		Command cmd = new Command();
@@ -176,13 +184,6 @@ public class Parser
 					p.addCommand(cmd);
 					c = (char)in.read();
 				}			
-			}
-			else if(c=='p') //id of the path (id attribute) just skip it
-			{
-				while(c!='"')
-				{
-					c = (char)in.read();
-				}
 			}
 			else // space
 			{
@@ -247,5 +248,25 @@ public class Parser
 
 	public void setPaths(ArrayList<Path> paths) {
 		this.paths = paths;
+	}
+
+
+	public float getHeight() {
+		return height;
+	}
+
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+
+	public float getWidth() {
+		return width;
+	}
+
+
+	public void setWidth(float width) {
+		this.width = width;
 	}
 }

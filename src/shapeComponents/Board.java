@@ -7,10 +7,15 @@ public class Board
 {
 	private ArrayList<FinalShape> shapes;
 	
+	private float height;
 	
-	public Board(ArrayList<FinalShape> s)
+	private float width;
+	
+	public Board(ArrayList<FinalShape> s,float h, float w)
 	{
 		this.shapes=s;
+		this.height = h;
+		this.width=w;
 	}
 	
 	
@@ -52,6 +57,7 @@ public class Board
 		}
 	}
 	
+	//rescale all the shapes of the board
 	public void rescale(float rescaleX,float rescaleY)
 	{
 		
@@ -67,5 +73,45 @@ public class Board
 				}
 			}
 		}
+	}
+	
+	//calculate the hitbox for all the shapes in the board
+	public void calculateAreaOfAllShapes()
+	{
+		for(FinalShape sc : this.shapes)
+		{
+			sc.calculateArea();
+		}
+	}
+	
+	//widow that respresent the initial size of the svg
+	public void addWindow(float width, float height)
+	{
+		FinalShape window = new FinalShape();
+		window.addComponent(new line(new Point(0.0f,0.0f),new Point(width,0.0f)));
+		window.addComponent(new line(new Point(width,0.0f),new Point(width,height)));
+		window.addComponent(new line(new Point(width,height),new Point(0.0f,height)));
+		window.addComponent(new line(new Point(0.0f,height),new Point(0.0f,0.0f)));
+		this.getShapes().add(window);
+	}
+
+
+	public float getWidth() {
+		return width;
+	}
+
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+
+	public float getHeight() {
+		return height;
+	}
+
+
+	public void setHeight(float height) {
+		this.height = height;
 	}
 }

@@ -24,22 +24,16 @@ public class OptimizationWindow extends JPanel
 
 	private Board board;
 	
-	
+	private Boolean hitbox;
 	
 	public OptimizationWindow(Board b)
 	{
 		super();
 		this.board=b;
+		this.hitbox=false;
 	}
 		
-
 	
-	//draw a bezier curve from cursor to a using c1 as control point and c2 as control point for the end of the curve
-	public void curveTo(ShapeComponent s)
-	{
-		
-
-	}
 	
 	public void drawLine(ShapeComponent s, Graphics g)
 	{
@@ -59,12 +53,14 @@ public class OptimizationWindow extends JPanel
 	      super.paintComponent(g);
 	      
 	      for(FinalShape f : this.board.getShapes())
-	      {
-	    	  //hitbox
-	    	  f.calculateArea();
-	    	  for(ShapeComponent s : f.getMyHitbox().getComponents())
+	      {    
+	    	  if(this.hitbox==true)
 	    	  {
-	    		  drawLine(s,g);
+	    			  //hitbox
+	    	    	  for(ShapeComponent s : f.getMyHitbox().getComponents())
+	    	    	  {
+	    	    		  drawLine(s,g);
+	    	    	  }
 	    	  }
 	    	  
 	    	  //draw all the shapes
@@ -85,10 +81,16 @@ public class OptimizationWindow extends JPanel
 	    			  }
 	    		  }
 		      }
-	      }
-	      
-	            
+	      }     
+	  }	
+	  
+	  public void setHitbox(Boolean b)
+	  {
+		  this.hitbox=b;
 	  }
 	  
-	
+	  public boolean getHitbox()
+	  {
+		  return this.hitbox;
+	  }
 }

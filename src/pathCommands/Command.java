@@ -127,7 +127,7 @@ public class Command
 			c=(char)in.read();
 		}
 		
-		//System.out.println(x+" "+y);
+		System.out.println(x+" "+y);
 		
 		//we reached the last command of the path (case where we already read the end of path char (") and we must advertise the parser)
 		if(c=='"')

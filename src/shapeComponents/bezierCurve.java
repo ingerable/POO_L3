@@ -66,7 +66,84 @@ public class bezierCurve extends ShapeComponent
 	{
 		return  'b';
 	}
+	
+
+	//get the minimum value for x 
+	public float getMinX()
+	{
+		double t =0.0;
+		float minX = this.getMaxX();
+		Point temp;
+		while(t<1)
+		{
+			temp = this.point_t(t);
+			if(temp.getX()<minX)
+			{
+				minX=temp.getX();
+			}
+			t+=0.01;
+		}
 		
+		return minX;
+	}
+	
+	//get the minimum value for y
+	public float getMinY()
+	{
+		double t =0.0;
+		float minY = this.getMaxY();
+		Point temp;
+		while(t<1)
+		{
+			temp = this.point_t(t);
+			if(temp.getY()<minY)
+			{
+				minY=temp.getY();
+			}
+			t+=0.01;
+		}
+		
+		return minY;
+	}
+	
+	//get the maximum value for x 
+	public float getMaxX()
+	{
+		double t =0.0;
+		float maxX = 0.0f;
+		Point temp;
+		while(t<1)
+		{
+			temp = this.point_t(t);
+			if(temp.getX()>maxX)
+			{
+				maxX=temp.getX();
+			}
+			t+=0.01;
+		}
+		
+		return maxX;
+	}
+	
+	//get the maximum value for y
+	public float getMaxY()
+	{
+		double t =0.0;
+		float maxY = 0.0f;
+		Point temp;
+		while(t<1)
+		{
+			temp = this.point_t(t);
+			if(temp.getY()>maxY)
+			{
+				maxY=temp.getY();
+			}
+			t+=0.01;
+		}
+		
+		return maxY;
+}
+
 		
 	/*
 	 * accesors	
