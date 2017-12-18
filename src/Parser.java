@@ -88,19 +88,28 @@ public class Parser
 		}
 	}
 	
-	public void isFound2(FileReader b, int index, String pattern) throws IOException
+	public Boolean isFound2(FileReader b, int index, String pattern, String pattern2) throws IOException
 	{
 		
-		while(index!=pattern.length()-1)
+		int c = b.read();
+		
+		if(c == (int)pattern.charAt(index) || c==(int)pattern2.charAt(index))
 		{
-			if(b.read()==(int)pattern.charAt(index))
+			
+			// last char of path, now we need to stop recursive call
+			if(index==pattern.length()-1 || index == pattern2.length()-1)
 			{
-				index++;
+				
+				return true;
 			}
 			else
 			{
-				index=0;
+				return isFound2(b,index+1,pattern,pattern2);
 			}
+		}
+		else
+		{
+			return false;
 		}
 	}
 		
@@ -114,8 +123,17 @@ public class Parser
 		
 		//look for the first occurence of a path
 		while(isFound(in,0,"<path")==false);
-		while(isFound(in,0,"d=\"m")==false);
-		char c = 'm';
+		 
+		char c = (char)in.read();
+		
+		//while we do not found the d balise with a command
+		while(!isCommand((char)c))
+		{
+			while(isFound(in,0,"d=\"")==false);
+			c = (char)in.read();
+		}
+		
+		
 		
 		//while we do not reach the end of the path
 		while(c!='"' && cmd.isLast()==false)
@@ -123,11 +141,15 @@ public class Parser
 			
 			if( (Character.isDigit(c) || c=='-') && cmd!=null) //this is an implicit command, so we have to deduce it from the last command
 			{
-				cmd = extractImplicitCommand(cmd,in,c);
-				
-				if(cmd.getCharType()=='l' || cmd.getCharType()=='L')//special case, the last command was moveto command
+					
+				if(cmd.getCharType()=='m' || cmd.getCharType()=='M')//special case, the last command was moveto command
 				{
-					p.addCommand(cmd); // add a first command lineto 
+					cmd = extractImplicitCommand(cmd,in,c);
+					p.addCommand(cmd); // we have to add an lineto Command  
+				}
+				else
+				{
+					cmd = extractImplicitCommand(cmd,in,c);
 				}
 				
 				c = (char)in.read();

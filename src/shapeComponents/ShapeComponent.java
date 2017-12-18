@@ -27,7 +27,7 @@ public class ShapeComponent
 	//get the minimum value for x 
 	public float getMinX()
 	{
-		float min=0.0f;
+		float min=this.getMaxX();
 		for(Point p : this.points)
 		{
 			if(p.getX()<min)
@@ -41,7 +41,7 @@ public class ShapeComponent
 	//get the minimum value for y
 	public float getMinY()
 	{
-		float min=0.0f;
+		float min= this.getMaxY();
 		for(Point p : this.points)
 		{
 			if(p.getY()<min)

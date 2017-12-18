@@ -60,6 +60,14 @@ public class OptimizationWindow extends JPanel
 	      
 	      for(FinalShape f : this.board.getShapes())
 	      {
+	    	  //hitbox
+	    	  f.calculateArea();
+	    	  for(ShapeComponent s : f.getMyHitbox().getComponents())
+	    	  {
+	    		  drawLine(s,g);
+	    	  }
+	    	  
+	    	  //draw all the shapes
 	    	  for(ShapeComponent sc : f.getComponents())
 		      {
 	    		  if(sc.whoiam()=='l')
@@ -73,11 +81,9 @@ public class OptimizationWindow extends JPanel
 	    			  {
 	    				  Point temp = sc.point_t(t);
 	    				  g.drawLine((int)temp.getX(),(int)temp.getY(),(int)temp.getX(),(int)temp.getY());
-	    				  t+=0.1;
+	    				  t+=0.001;
 	    			  }
-	    			  
 	    		  }
-		    	  
 		      }
 	      }
 	      

@@ -7,9 +7,14 @@ import pathCommands.Path;
 
 public class FinalShape 
 {
+	//all the components of the final shape
 	private ArrayList<ShapeComponent> components;
 	
+	//path associated to the final shape
 	private Path path;
+	
+	//the "hitbox" of the final shape
+	private FinalShape myHitbox;
 	
 	public FinalShape(Path p)
 	{
@@ -17,6 +22,11 @@ public class FinalShape
 		this.components = new ArrayList<ShapeComponent>();
 		this.pathToShape();
 		
+	}
+	
+	public FinalShape()
+	{
+		this.components = new ArrayList<ShapeComponent>();	
 	}
 
 	// transform path into shape
@@ -57,7 +67,9 @@ public class FinalShape
 						{
 							sc = new line(sc.getPoints().get(1),cmd.getPoints().get(i));
 							this.addComponent(sc);
+							cursor = sc.getPositionForCursor();
 						}
+						
 						break;
 					case'c':
 						// iterate all the 3 points of the polybezier curve, use the end position of the last bezier curve to start the new one
@@ -81,7 +93,9 @@ public class FinalShape
 						{
 							sc = new bezierCurve(cmd,sc.getPoints().get(3),i);
 							this.addComponent(sc);
+							cursor = sc.getPositionForCursor();
 						}
+						
 						break;			
 				}
 			}
@@ -104,6 +118,7 @@ public class FinalShape
 					case'L':
 						sc=new line(cursor,cmd);
 						this.addComponent(sc);
+						cursor = sc.getPositionForCursor();
 						break;
 					case'c':
 						sc=new bezierCurve(cmd,cursor,0);
@@ -114,6 +129,7 @@ public class FinalShape
 					case'C':
 						sc=new bezierCurve(cmd,cursor,0);
 						this.addComponent(sc);
+						cursor = sc.getPositionForCursor();
 						break;			
 				}
 			}
@@ -129,7 +145,12 @@ public class FinalShape
 				{
 					lastSubPath = new Point(cmd.getPosition().getX()+cursor.getX(),cmd.getPosition().getY()+cursor.getY());
 					cursor = new Point(lastSubPath.getX(),lastSubPath.getY());
-				}	
+				}
+				else
+				{
+					lastSubPath = new Point(cmd.getPosition().getX(),cmd.getPosition().getY());
+					cursor = new Point(cmd.getPosition().getX(),cmd.getPosition().getY()); // update the cursor
+				}
 			}
 			else if(cmd.getCharType()=='z')
 			{
@@ -156,8 +177,8 @@ public class FinalShape
 	//look for the minimum value and add it to all shape component ( to make all the coordinates stricly positive)
 	public Point getMin()
 	{
-		float minX=0.0f;
-		float minY=0.0f;
+		float minX=this.getMax().getX();
+		float minY=this.getMax().getY();
 		
 		//look for the minimum value for x and y
 		for(ShapeComponent s : this.components)
@@ -176,79 +197,41 @@ public class FinalShape
 		return new Point(minX,minY);
 	}
 	
+	public void calculateArea()
+	{
+		Point min = this.getMin();
+		Point max = this.getMax();
+		FinalShape hitbox = new FinalShape();
+		hitbox.addComponent(new line(new Point(min.getX(),min.getY()),new Point(max.getX(),min.getY())));
+		hitbox.addComponent(new line(new Point(max.getX(),min.getY()),new Point(max.getX(),max.getY())));
+		hitbox.addComponent(new line(new Point(max.getX(),max.getY()),new Point(min.getX(),max.getY())));
+		hitbox.addComponent(new line(new Point(min.getX(),max.getY()),new Point(min.getX(),min.getY())));
+		this.setMyHitbox(hitbox);
+	}
 	
-	//look for the maximum value and add it to all shape component 
-		public Point getMax()
-		{
-			float maxX=0.0f;
-			float maxY=0.0f;
-			
-			//look for the minimum value for x and y
-			for(ShapeComponent s : this.components)
-			{
-				if(s.getMaxX()>maxX)
-				{
-					maxX=s.getMinX();
-				}
-				
-				if(s.getMinY()>maxY)
-				{
-					maxY=s.getMinY();
-				}
-			}
-					
-			return new Point(maxX,maxY);
-		}
-	
-	//look for the minimum value and add it to all shape component ( to make all the coordinates stricly positive)
-	public void reSize(int xCap, int yCap)
+	//look for the maximum value 
+	public Point getMax()
 	{
 		float maxX=0.0f;
 		float maxY=0.0f;
-		float minX=0.0f;
-		float minY=0.0f;
-		
-		//look for the maximum and minimum value for x and y
+			
+		//look for the minimum value for x and y
 		for(ShapeComponent s : this.components)
 		{
 			if(s.getMaxX()>maxX)
 			{
 				maxX=s.getMaxX();
 			}
-			
-			if(s.getMaxY()>maxY)
+				
+			if(s.getMinY()>maxY)
 			{
 				maxY=s.getMaxY();
 			}
-			
-			if(s.getMinX()<minX)
-			{
-				minX=s.getMinX();
-			}
-				
-			if(s.getMinY()<minY)
-			{
-				minY=s.getMinY();
-			}
 		}
-		
-		//calculate how much we have to divide each point so they will not exceed the capX and capY value
-		
-		for(ShapeComponent s : this.components)
-		{
-			for(Point p : s.getPoints())
-			{
-				float x = (xCap*(p.getX()-minX)/(maxX-minX));
-				float y = (yCap*(p.getY()-minY)/(maxY-minY));
-				
-				p.setX(x);
-				p.setY(y);
-			}
-		}
-		
-		
+					
+		return new Point(maxX,maxY);
 	}
-	
+				
 	
 	/*
 	 * accessors
@@ -277,5 +260,13 @@ public class FinalShape
 	public void addComponent(ShapeComponent sc) 
 	{
 		this.components.add(sc);
+	}
+
+	public FinalShape getMyHitbox() {
+		return myHitbox;
+	}
+
+	public void setMyHitbox(FinalShape myHitbox) {
+		this.myHitbox = myHitbox;
 	}
 }

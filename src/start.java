@@ -58,16 +58,20 @@ public class start {
 			{
 				shapes.add(new FinalShape(path));
 			}
+			
+			
+			
 			Board c = new Board(shapes);
+			c.getShapes().get(8).getPath().printCommands();
 			System.out.println("//////////////////  shape components /////////////////");
-			c.getShapes().get(0).printShapeComponents();
+			c.getShapes().get(8).printShapeComponents();
 			System.out.println("//////////////////  shape components positive/////////////////");
 			
 			c.toPositive();
-			c.getShapes().get(0).printShapeComponents();
+			c.getShapes().get(8).printShapeComponents();
 			System.out.println("//////////////////  shape components rescaled/////////////////");
-			c.rescale(0.2f,0.2f);
-			c.getShapes().get(0).printShapeComponents();
+			c.rescale(0.25f,0.25f);
+			c.getShapes().get(8).printShapeComponents();
 			new Gui(c);
 			
 			
