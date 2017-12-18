@@ -87,7 +87,17 @@ public class ShapeComponent
 	//return the value of the shape component used to update the cursor
 	public Point getPositionForCursor(){return null;}
 	
+	//identify the type of the child
+	public char whoiam()
+	{
+		return  ' ';
+	}
 	
+	//method for bezier curve
+	public Point point_t(double t)
+	{
+		return new Point(0,0);
+	}
 	/*
 	 * accessors
 	 */

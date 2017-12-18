@@ -35,6 +35,13 @@ public class line extends ShapeComponent
 		this.getPoints().get(1).addPoint(cursor);
 	}
 	
+	//identification
+	@Override
+	public char whoiam()
+	{
+		return  'l';
+	}
+	
 	
 	//print the current command
 	@Override
@@ -49,7 +56,5 @@ public class line extends ShapeComponent
 	{
 		return this.getPoints().get(1); 
 	}
-	
-
 
 }

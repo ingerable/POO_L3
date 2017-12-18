@@ -71,6 +71,13 @@ public class bezierCurve extends ShapeComponent
 	{
 		return this.getPoints().get(3); 
 	}
+	
+	//identify the type of the child
+	@Override
+	public char whoiam()
+	{
+		return  'b';
+	}
 		
 		
 	/*

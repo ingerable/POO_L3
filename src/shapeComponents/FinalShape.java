@@ -154,7 +154,7 @@ public class FinalShape
 	
 	
 	//look for the minimum value and add it to all shape component ( to make all the coordinates stricly positive)
-	public void toPositive()
+	public Point getMin()
 	{
 		float minX=0.0f;
 		float minY=0.0f;
@@ -172,28 +172,33 @@ public class FinalShape
 				minY=s.getMinY();
 			}
 		}
-		
-		float finalValue;
-		
-		if(minX>minY)
-		{
-			finalValue = minY;
-		}
-		else
-		{
-			finalValue = minX;
-		}
-		
-		for(ShapeComponent s : this.components)
-		{
-			for(Point p : s.getPoints())
-			{
-				Point p1 = new Point(Math.abs(finalValue),Math.abs(finalValue));
-				p.addPoint(p1);
-			}
-		}
+				
+		return new Point(minX,minY);
 	}
 	
+	
+	//look for the maximum value and add it to all shape component 
+		public Point getMax()
+		{
+			float maxX=0.0f;
+			float maxY=0.0f;
+			
+			//look for the minimum value for x and y
+			for(ShapeComponent s : this.components)
+			{
+				if(s.getMaxX()>maxX)
+				{
+					maxX=s.getMinX();
+				}
+				
+				if(s.getMinY()>maxY)
+				{
+					maxY=s.getMinY();
+				}
+			}
+					
+			return new Point(maxX,maxY);
+		}
 	
 	//look for the minimum value and add it to all shape component ( to make all the coordinates stricly positive)
 	public void reSize(int xCap, int yCap)
@@ -233,8 +238,8 @@ public class FinalShape
 		{
 			for(Point p : s.getPoints())
 			{
-				float x = (xCap/(maxX-minX)*(p.getX()-minX));
-				float y = (yCap/(maxY-minY)*(p.getY()-minY));
+				float x = (xCap*(p.getX()-minX)/(maxX-minX));
+				float y = (yCap*(p.getY()-minY)/(maxY-minY));
 				
 				p.setX(x);
 				p.setY(y);
@@ -243,6 +248,7 @@ public class FinalShape
 		
 		
 	}
+	
 	
 	/*
 	 * accessors
