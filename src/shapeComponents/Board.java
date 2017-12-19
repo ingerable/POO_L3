@@ -58,8 +58,9 @@ public class Board
 	}
 	
 	//rescale all the shapes of the board
-	public void rescale(float rescaleX,float rescaleY)
+	public void rescale(float rescale)
 	{
+		
 		
 		for(FinalShape sc : this.shapes) // for all shapes in the board
 		{
@@ -67,7 +68,7 @@ public class Board
 			{
 				for(Point p : c.getPoints())
 				{
-					Point temp = new Point(p.getX()*rescaleX,p.getY()*rescaleY);
+					Point temp = new Point(p.getX()*rescale,p.getY()*rescale);
 					p.setX(temp.getX());
 					p.setY(temp.getY());
 				}

@@ -124,7 +124,7 @@ public class Gui extends JFrame implements ChangeListener
 		 * buttons, slider
 		 */
 		
-		scale = new JSlider(JSlider.HORIZONTAL,0,100,100);
+		scale = new JSlider(JSlider.HORIZONTAL,0,200,100);
 		scale.addChangeListener(this);
 		
 		JButton button = new JButton("Optimize");
@@ -168,7 +168,7 @@ public class Gui extends JFrame implements ChangeListener
 	public void stateChanged(ChangeEvent arg0) 
 	{
 		float value = (float)scale.getValue()/100;
-		c.rescale(value, value);
+		c.rescale(value);
 		c.calculateAreaOfAllShapes();
 		this.jp.repaint();
 		
