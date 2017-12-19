@@ -68,6 +68,7 @@ public class bezierCurve extends ShapeComponent
 	
 
 	//get the minimum value for x 
+	@Override
 	public float getMinX()
 	{
 		double t =0.0;

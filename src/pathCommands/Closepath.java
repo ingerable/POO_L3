@@ -25,12 +25,5 @@ public class Closepath extends Command
 		}
 		
 		return in;	
-	}
-	
-	@Override
-	public Point getPosition()
-	{
-		return new Point(0,0);
-	}
-	
+	}	
 }

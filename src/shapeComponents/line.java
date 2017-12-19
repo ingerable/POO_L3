@@ -15,7 +15,6 @@ public class line extends ShapeComponent
 		
 		//end of the line
 		this.addPoint(new Point(c.getPoints().get(0).getX(),c.getPoints().get(0).getY()));
-		
 	}
 	
 	public line(Point cursor, Point lastSubPath) 

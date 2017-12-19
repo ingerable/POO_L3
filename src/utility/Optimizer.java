@@ -78,5 +78,5 @@ public class Optimizer
 		
 	}
 	
-	//compute the width of the 
+	
 }

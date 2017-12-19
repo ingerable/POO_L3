@@ -57,64 +57,47 @@ public class Gui extends JFrame implements ChangeListener
 		          getAbsolutePath();
 		};
 		
+		
 		/*
 		 * initialization parser
 		 */
 		Parser p = Parser.getParser();
 		p.setFile(file);
 		
-		int nbrPath;
+
 		
+		//get the board from the parsed svg
 		try 
 		{
-			//get the width and the height of the svg 
-			p.getWidthHeigh();
-			
-			//get the numer of path to extract
-			nbrPath = p.numberOfPattern("<path");
-			
-			FileReader in = new FileReader(p.getFile());
-			
-			//extract all the path
-			for(int i=0; i<nbrPath;i++)
-			{
-				p.extractPathCommands(in);
-			}
-			in.close();
-			
-			//list of shapes
-			ArrayList<FinalShape> shapes = new ArrayList<FinalShape>();
-			
-			// transform all path into shapes	
-			for(Path path : p.getPaths())
-			{
-				shapes.add(new FinalShape(path));
-			}
-			
-			
-			//p.getPaths().get(0).printCommands();
-			c = new Board(shapes,p.getHeight(),p.getWidth());
-			
-
-			
-			// put all coordinates in positive values
-			c.toPositive();
-			
-			//add the window that represent the original size of the svg
-			c.addWindow(p.getWidth(), p.getHeight());
-			
-			
-			//compute hitbox
-			c.calculateAreaOfAllShapes();
-			
-			///////test///////
-			//Optimizer op = new Optimizer(c);
-			//op.sortHitbox();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			this.c = p.getBoardFromSvg();
+		} 
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
+		
+		
+		
+		
+		// put all coordinates in positive values
+		c.toPositive();
+		
+		//add the window that represent the original size of the svg
+		c.addWindow(p.getWidth(), p.getHeight());
+		
+		
+		//compute hitbox
+		c.calculateAreaOfAllShapes();
+		
+		//p.getPaths().get(18).printCommands();
+		
+		System.out.println("///////////////////////// shape 9 ///////////////////////////////");
+		this.c.getShapes().get(9).printShapeComponents();
+		
+		
+		//System.out.println("//////////////////////// hitbox shape9 ////////////////////");
+		//this.c.getShapes().get(9).getMyHitbox().printShapeComponents();
+		
 		
 		
 		this.jp = new OptimizationWindow(c);
@@ -124,7 +107,7 @@ public class Gui extends JFrame implements ChangeListener
 		 * buttons, slider
 		 */
 		
-		scale = new JSlider(JSlider.HORIZONTAL,0,200,100);
+		scale = new JSlider(JSlider.HORIZONTAL,0,100,100);
 		scale.addChangeListener(this);
 		
 		JButton button = new JButton("Optimize");

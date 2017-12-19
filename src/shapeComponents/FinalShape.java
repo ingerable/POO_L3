@@ -220,7 +220,7 @@ public class FinalShape
 				maxX=s.getMaxX();
 			}
 				
-			if(s.getMinY()>maxY)
+			if(s.getMaxY()>maxY)
 			{
 				maxY=s.getMaxY();
 			}

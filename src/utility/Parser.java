@@ -1,6 +1,7 @@
 package utility;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.util.Arrays;
 
 import pathCommands.Command;
 import pathCommands.Path;
+import shapeComponents.Board;
+import shapeComponents.FinalShape;
 import shapeComponents.Point;
 
 /**
@@ -49,6 +52,52 @@ public class Parser
 			instanceParser = new Parser();
 		}
 		return instanceParser;
+	}
+	
+	
+	//parse the svg, then transform the parsed path into shapes and then return a board(composed of shapes)
+	public Board getBoardFromSvg() throws IOException
+	{
+		//get the width and the height of the svg 
+		this.getWidthHeigh();
+		
+		//get the numer of path to extract
+		int nbrPath = this.numberOfPattern("<path");
+		
+		FileReader in = new FileReader(this.getFile());
+		
+		//extract all the path
+		for(int i=0; i<nbrPath;i++)
+		{
+			try 
+			{
+				this.extractPathCommands(in);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		try 
+		{
+			in.close();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		//list of shapes
+		ArrayList<FinalShape> shapes = new ArrayList<FinalShape>();
+		
+		// transform all path into shapes	
+		for(Path path : this.getPaths())
+		{
+			shapes.add(new FinalShape(path));
+		}
+		
+		//p.getPaths().get(0).printCommands();
+		return new Board(shapes,this.getHeight(),this.getWidth());
 	}
 	
 	//get the width and the height from the svg
