@@ -7,9 +7,6 @@ import shapeComponents.Point;
 
 public class Lineto extends Command
 {
-	private ArrayList<Point> points;
-	
-	private char charType;
 	
 	public Lineto(boolean isR) 
 	{

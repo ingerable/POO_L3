@@ -53,7 +53,7 @@ public class FinalShape
 						cursor = sc.getPositionForCursor(); //update the cursor
 						for(int i=1; i<cmd.getPoints().size();i++) // use the end of the last line to create the beggining of the new one
 						{
-							sc = new line(sc.getPoints().get(1),cmd.getPoints().get(i));
+							sc = new line(cursor,cmd.getPoints().get(i));
 							sc.toAbsolute(cursor);
 							cursor = sc.getPositionForCursor(); //update the cursor
 							this.addComponent(sc);
@@ -92,7 +92,7 @@ public class FinalShape
 						cursor = sc.getPositionForCursor(); //update the cursor
 						for(int i=3; i<(cmd.getPoints().size());i=i+3)
 						{
-							sc = new bezierCurve(cmd,sc.getPoints().get(3),i);
+							sc = new bezierCurve(cmd,cursor,i);
 							this.addComponent(sc);
 							cursor = sc.getPositionForCursor();
 						}

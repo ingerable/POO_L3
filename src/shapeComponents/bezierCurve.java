@@ -15,10 +15,9 @@ public class bezierCurve extends ShapeComponent
 		this.addPoint(new Point(c.getPoints().get(point).getX(),c.getPoints().get(point).getY()));
 		this.addPoint(new Point(c.getPoints().get(point+1).getX(),c.getPoints().get(point+1).getY()));
 		this.addPoint(new Point(c.getPoints().get(point+2).getX(),c.getPoints().get(point+2).getY()));
-		
 	}
 	
-
+	
 	public Point point_t(double t)
 	{
 		double tmp = 1-t;
@@ -100,7 +99,7 @@ public class bezierCurve extends ShapeComponent
 			{
 				minY=temp.getY();
 			}
-			t+=0.01;
+			t+=0.001;
 		}
 		
 		return minY;
@@ -119,7 +118,7 @@ public class bezierCurve extends ShapeComponent
 			{
 				maxX=temp.getX();
 			}
-			t+=0.01;
+			t+=0.001;
 		}
 		
 		return maxX;

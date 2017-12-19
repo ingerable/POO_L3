@@ -9,16 +9,13 @@ import shapeComponents.Point;
 
 public class Bezier extends Command 
 {
-	private ArrayList<Point> points;
-	
-	private char charType;
 		
 	public Bezier(boolean isR)
 	{
 		super('c',isR);
 		if(!isR)
 		{
-			this.charType='C';
+			this.setCharType('C');
 		}
 	}
 		

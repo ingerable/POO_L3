@@ -73,35 +73,35 @@ public class Command
 	}
 	
 	//return the implicit type of the command based on the last command
-		public static Command getImplicitType(Command lastCommand )
+	public static Command getImplicitType(Command lastCommand )
+	{
+		Command cmd=null;
+		switch(lastCommand.charType)
 		{
-			Command cmd=null;
-			switch(lastCommand.charType)
-			{
-				case'm':
-					cmd=new Lineto(true);
-					break;
-				case'z':
-					cmd=new Closepath(true);
-					break;
-				case'l':
-					cmd=lastCommand;
-					break;
-				case'c':
-					cmd=lastCommand;
-					break;
-				case'M':
-					cmd=new Lineto(false);
-					break;
-				case'L':
-					cmd=lastCommand;
-					break;
-				case'C':
-					cmd=lastCommand;
-					break;			
-			}
-			return cmd;
+			case'm':
+				cmd=new Lineto(true);
+				break;
+			case'z':
+				cmd=new Closepath(true);
+				break;
+			case'l':
+				cmd=lastCommand;
+				break;
+			case'c':
+				cmd=lastCommand;
+				break;
+			case'M':
+				cmd=new Lineto(false);
+				break;
+			case'L':
+				cmd=lastCommand;
+				break;
+			case'C':
+				cmd=lastCommand;
+				break;			
 		}
+		return cmd;
+	 }
 	
 	//get the point for the current command with the given file stream, the last argument indicate if the there is space or not before we read 
 	public FileReader extractPoints(FileReader in,char firstNumber) throws IOException
@@ -127,7 +127,7 @@ public class Command
 			c=(char)in.read();
 		}
 		
-		System.out.println(x+" "+y);
+		//System.out.println(x+" "+y);
 		
 		//we reached the last command of the path (case where we already read the end of path char (") and we must advertise the parser)
 		if(c=='"')

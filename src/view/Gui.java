@@ -92,6 +92,7 @@ public class Gui extends JFrame implements ChangeListener
 			}
 			
 			
+			//p.getPaths().get(0).printCommands();
 			c = new Board(shapes,p.getHeight(),p.getWidth());
 			
 
@@ -107,8 +108,8 @@ public class Gui extends JFrame implements ChangeListener
 			c.calculateAreaOfAllShapes();
 			
 			///////test///////
-			Optimizer op = new Optimizer(c);
-			op.sortHitbox();
+			//Optimizer op = new Optimizer(c);
+			//op.sortHitbox();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

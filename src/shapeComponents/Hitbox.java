@@ -17,13 +17,13 @@ public class Hitbox extends FinalShape
 	
 	public void computePerimeter()
 	{
-		/*Point max = this.getMax();
-		Point min = this.getMin();
+		Point max = super.getMax();
+		Point min = super.getMin();
 		float width = max.getX()-min.getX();
 		float height = max.getX()-min.getX();
 		this.width = width;
 		this.height = height;
-		this.perimeter = (2*width)+(2*height);*/
+		this.perimeter = (2*width)+(2*height);
 	}
 	
 	
