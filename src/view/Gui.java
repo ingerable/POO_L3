@@ -89,10 +89,10 @@ public class Gui extends JFrame implements ChangeListener
 		//compute hitbox
 		c.calculateAreaOfAllShapes();
 		
-		//p.getPaths().get(18).printCommands();
+		p.getPaths().get(3).printCommands();
 		
 		System.out.println("///////////////////////// shape 9 ///////////////////////////////");
-		this.c.getShapes().get(9).printShapeComponents();
+		this.c.getShapes().get(3).printShapeComponents();
 		
 		
 		//System.out.println("//////////////////////// hitbox shape9 ////////////////////");

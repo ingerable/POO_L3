@@ -1,5 +1,7 @@
 package shapeComponents;
 
+import java.util.ArrayList;
+
 public class Hitbox extends FinalShape 
 {
 	private float perimeter;
@@ -8,26 +10,14 @@ public class Hitbox extends FinalShape
 	
 	private float height;
 	
-	public Hitbox()
+	public Hitbox(float p, float w, float h)
 	{
 		super();
-		this.computePerimeter();
+		this.perimeter=p;
+		this.width=w;
+		this.height=h;
 	}
 
-	
-	public void computePerimeter()
-	{
-		Point max = super.getMax();
-		Point min = super.getMin();
-		float width = max.getX()-min.getX();
-		float height = max.getX()-min.getX();
-		this.width = width;
-		this.height = height;
-		this.perimeter = (2*width)+(2*height);
-	}
-	
-	
-	
 	/*
 	 * accessors
 	 */

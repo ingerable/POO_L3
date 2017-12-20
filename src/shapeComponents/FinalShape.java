@@ -198,12 +198,19 @@ public class FinalShape
 	{
 		Point min = this.getMin();
 		Point max = this.getMax();
-		Hitbox hitbox = new Hitbox();
+		
+		float width = max.getX()-min.getX();
+		float height = max.getY()-min.getY();
+		float perimeter = (2*width)+(2*height);
+		
+		Hitbox hitbox = new Hitbox(perimeter,width,height);
 		hitbox.addComponent(new line(new Point(min.getX(),min.getY()),new Point(max.getX(),min.getY())));
 		hitbox.addComponent(new line(new Point(max.getX(),min.getY()),new Point(max.getX(),max.getY())));
 		hitbox.addComponent(new line(new Point(max.getX(),max.getY()),new Point(min.getX(),max.getY())));
 		hitbox.addComponent(new line(new Point(min.getX(),max.getY()),new Point(min.getX(),min.getY())));
 		this.setMyHitbox(hitbox);
+
+		
 	}
 	
 	//look for the maximum value 
@@ -269,11 +276,13 @@ public class FinalShape
 		this.components.add(sc);
 	}
 
-	public Hitbox getMyHitbox() {
+	public Hitbox getMyHitbox() 
+	{
 		return myHitbox;
 	}
 
-	public void setMyHitbox(Hitbox myHitbox) {
+	public void setMyHitbox(Hitbox myHitbox) 
+	{
 		this.myHitbox = myHitbox;
 	}
 }
